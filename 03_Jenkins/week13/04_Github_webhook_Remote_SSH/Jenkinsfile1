@@ -6,7 +6,7 @@ pipeline {
         DOCKER_IMAGE    = 'winamonthep/fastapi-webhook:latest' // Ensure this Docker image name is correct and accessible.
         REMOTE_HOST     = 'winamonthep@35.247.158.160' // Replace with your actual username and remote IP.
         SSH_CREDENTIALS = 'ssh-prod' // Use the ID of the Jenkins stored SSH credentials.
-        // 09: test push
+        // 10: test push
     }
 
     stages {
