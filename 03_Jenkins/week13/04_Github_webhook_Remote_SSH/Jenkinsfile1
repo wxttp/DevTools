@@ -6,7 +6,7 @@ pipeline {
         DOCKER_IMAGE    = 'winamonthep/fastapi-webhook:latest' // Ensure this Docker image name is correct and accessible.
         REMOTE_HOST     = 'winamonthep@35.247.158.160' // Replace with your actual username and remote IP.
         SSH_CREDENTIALS = 'ssh-prod' // Use the ID of the Jenkins stored SSH credentials.
-        // 05: test push
+        // 06: test push
     }
 
     stages {
@@ -25,9 +25,15 @@ pipeline {
                 sshagent([SSH_CREDENTIALS]) {
                     // These commands manage Docker containers on the remote server.
                     // It stops and removes all containers, then removes all images, before running a new container.
-                    sh "ssh -o StrictHostKeyChecking=no $REMOTE_HOST 'docker stop \$(docker ps -a -q) || true'"
-                    sh "ssh -o StrictHostKeyChecking=no $REMOTE_HOST 'docker rm \$(docker ps -a -q) || true'"
-                    sh "ssh -o StrictHostKeyChecking=no $REMOTE_HOST 'docker rmi \$(docker images -q) || true'"
+                    // sh "ssh -o StrictHostKeyChecking=no $REMOTE_HOST 'docker stop \$(docker ps -a -q) || true'"
+                    // sh "ssh -o StrictHostKeyChecking=no $REMOTE_HOST 'docker rm \$(docker ps -a -q) || true'"
+                    // sh "ssh -o StrictHostKeyChecking=no $REMOTE_HOST 'docker rmi \$(docker images -q) || true'"
+                    // sh "ssh -o StrictHostKeyChecking=no $REMOTE_HOST 'docker run -d --name fastapi-webhook -p 8085:80 $DOCKER_IMAGE'"
+                    // sh "ssh -o StrictHostKeyChecking=no $REMOTE_HOST 'docker ps -a'"
+
+                    sh "ssh -o StrictHostKeyChecking=no $REMOTE_HOST 'docker stop $(docker ps -a -q) || true'"
+                    sh "ssh -o StrictHostKeyChecking=no $REMOTE_HOST 'docker rm $(docker ps -a -q) || true'"
+                    sh "ssh -o StrictHostKeyChecking=no $REMOTE_HOST 'docker rmi $(docker images -q) || true'"
                     sh "ssh -o StrictHostKeyChecking=no $REMOTE_HOST 'docker run -d --name fastapi-webhook -p 8085:80 $DOCKER_IMAGE'"
                     sh "ssh -o StrictHostKeyChecking=no $REMOTE_HOST 'docker ps -a'"
                 }
